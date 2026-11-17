@@ -81,7 +81,7 @@ Run the backend in one terminal and Vite in another:
 npm --prefix frontend run dev
 ```
 
-Open http://127.0.0.1:5173; Vite proxies `/api` and `/health` to FastAPI. The API documentation link at `/docs` is available on port 8000. For a separately hosted frontend, set `VITE_API_BASE_URL` before building and explicitly configure `CORS_ORIGINS` in the backend.
+Open http://127.0.0.1:5173; Vite proxies `/api`, `/health`, `/docs`, and `/openapi.json` to FastAPI. For a separately hosted frontend, set `VITE_API_BASE_URL` before building and explicitly configure `CORS_ORIGINS` in the backend.
 
 Environment variables in [.env.example](.env.example) are optional. Load a configuration file with `uvicorn backend.main:app --env-file .env`. The start script uses shell environment variables; it does not load `.env` automatically.
 

@@ -44,8 +44,8 @@ test('analytics shows saved evaluation and milling stays inactive', async ({ pag
   const metrics = await (await request.get('/api/engines/metrics')).json();
   await page.goto('/#analytics');
   await expect(page.getByRole('heading', { name: 'Performance, made visible.' })).toBeVisible();
-  await expect(page.getByText(metrics.mae.toFixed(2), { exact: true }).first()).toBeVisible();
-  await expect(page.getByRole('cell', { name: 'XGBoost · capped 125 SELECTED' })).toBeVisible();
+  await expect(page.getByRole('article').filter({ hasText: 'Mean absolute error' })).toContainText(metrics.mae.toFixed(2));
+  await expect(page.getByRole('cell', { name: `${metrics.model_name} SELECTED`, exact: true })).toBeVisible();
   const download = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export evaluation' }).click();
   expect((await download).suggestedFilename()).toBe('DUM-E-FD001-evaluation.json');
   await page.screenshot({ path: `test-results/analytics-${testInfo.project.name}.png`, fullPage: true });
