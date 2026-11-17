@@ -1,0 +1,6 @@
+{
+  "name": "dum-e-dashboard", "private": true, "version": "1.0.0", "type": "module",
+  "scripts": {"dev": "vite --host 127.0.0.1", "build": "vite build", "test:e2e": "playwright test"},
+  "dependencies": {"react": "^19.2.0", "react-dom": "^19.2.0", "recharts": "^3.4.1", "lucide-react": "^0.554.0"},
+  "devDependencies": {"@vitejs/plugin-react": "^5.1.0", "vite": "^7.2.2", "tailwindcss": "^4.1.17", "@tailwindcss/vite": "^4.1.17", "@playwright/test": "^1.56.1"}
+}
