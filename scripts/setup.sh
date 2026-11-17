@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+python3 -m venv .venv
+.venv/bin/python -m pip install -r backend/requirements.lock.txt
+npm --prefix frontend ci
+npm --prefix frontend run build
+.venv/bin/python -m ml.engines.inspect_data
+if [ ! -f ml/models/engines/model.joblib ] || [ ! -f ml/models/engines/metrics.json ]; then
+  .venv/bin/python -m ml.engines.train
+fi
+printf '\nSetup complete. Run: bash scripts/start.sh\n'

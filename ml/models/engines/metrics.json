@@ -1,0 +1,1175 @@
+{
+  "model_name": "XGBoost \u00b7 capped 125",
+  "model_version": "1.0.0",
+  "trained_at": "2026-11-17T18:06:57.898909+00:00",
+  "training_config": {
+    "seed": 42,
+    "window": 15,
+    "subset": "FD001",
+    "train_engines": [
+      2,
+      3,
+      4,
+      6,
+      7,
+      8,
+      9,
+      10,
+      12,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      21,
+      22,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      33,
+      35,
+      36,
+      37,
+      38,
+      39,
+      41,
+      42,
+      43,
+      44,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      72,
+      73,
+      75,
+      76,
+      79,
+      80,
+      82,
+      83,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100
+    ],
+    "validation_engines": [
+      1,
+      5,
+      11,
+      13,
+      19,
+      23,
+      31,
+      32,
+      34,
+      40,
+      45,
+      46,
+      54,
+      71,
+      74,
+      77,
+      78,
+      81,
+      84,
+      91
+    ],
+    "validation_prefix_fractions": [
+      0.35,
+      0.55,
+      0.75
+    ],
+    "validation_points": 60,
+    "selection_metric": "uncapped validation RMSE",
+    "output_policy": "Predictions clipped at zero, expressed only in cycles.",
+    "python": "3.10.11",
+    "scikit_learn": "1.7.2",
+    "dataset_sha256": {
+      "train_FD001.txt": "963b5e22825b34d8b21c69e1aeb4af3e647050eb672ee8834ba4b5d91d2de0f8",
+      "test_FD001.txt": "3cda7109ce17bafb5443f2ac926cfcf88154b941b8c4cf95eb55d1ddd6f52851",
+      "RUL_FD001.txt": "a19c8ec94931949d0485bdc35118206e9c81c4547b422efb9cf86f4ceddbceca"
+    },
+    "rul_cap": 125
+  },
+  "model_comparison": [
+    {
+      "name": "Constant baseline",
+      "rul_cap": null,
+      "mae": 35.40112613972586,
+      "rmse": 42.125551582476525
+    },
+    {
+      "name": "Ridge regression",
+      "rul_cap": null,
+      "mae": 26.345894118191755,
+      "rmse": 32.289755636067426
+    },
+    {
+      "name": "Random Forest",
+      "rul_cap": null,
+      "mae": 21.40923424742359,
+      "rmse": 28.286170402356213
+    },
+    {
+      "name": "Random Forest \u00b7 capped 125",
+      "rul_cap": 125,
+      "mae": 20.24370234196528,
+      "rmse": 26.636404153283983
+    },
+    {
+      "name": "XGBoost",
+      "rul_cap": null,
+      "mae": 23.771207809448242,
+      "rmse": 30.90823465885042
+    },
+    {
+      "name": "XGBoost \u00b7 capped 125",
+      "rul_cap": 125,
+      "mae": 19.752016067504883,
+      "rmse": 26.071563827850593
+    }
+  ],
+  "feature_importance": [
+    {
+      "feature": "sensor_4_mean_5",
+      "importance": 0.3694745600223541
+    },
+    {
+      "feature": "sensor_11_mean_5",
+      "importance": 0.12440993636846542
+    },
+    {
+      "feature": "sensor_15_mean_5",
+      "importance": 0.12251201272010803
+    },
+    {
+      "feature": "sensor_3_mean_15",
+      "importance": 0.10808350890874863
+    },
+    {
+      "feature": "sensor_15_mean_15",
+      "importance": 0.041629608720541
+    },
+    {
+      "feature": "sensor_2_mean_5",
+      "importance": 0.03178020939230919
+    },
+    {
+      "feature": "sensor_4_mean_15",
+      "importance": 0.027302591130137444
+    },
+    {
+      "feature": "cycle",
+      "importance": 0.014370289631187916
+    },
+    {
+      "feature": "sensor_9_mean_5",
+      "importance": 0.013628384098410606
+    },
+    {
+      "feature": "sensor_3_mean_5",
+      "importance": 0.012932189740240574
+    },
+    {
+      "feature": "sensor_2_mean_15",
+      "importance": 0.0120391845703125
+    },
+    {
+      "feature": "sensor_9",
+      "importance": 0.00966429989784956
+    },
+    {
+      "feature": "sensor_17_mean_5",
+      "importance": 0.008311053737998009
+    },
+    {
+      "feature": "sensor_21_mean_5",
+      "importance": 0.007390643935650587
+    },
+    {
+      "feature": "sensor_7_mean_5",
+      "importance": 0.0065502990037202835
+    },
+    {
+      "feature": "sensor_9_mean_15",
+      "importance": 0.005313550587743521
+    },
+    {
+      "feature": "sensor_12_mean_5",
+      "importance": 0.0044531067833304405
+    },
+    {
+      "feature": "sensor_14_mean_5",
+      "importance": 0.004015870857983828
+    },
+    {
+      "feature": "sensor_20_mean_5",
+      "importance": 0.0032477162312716246
+    },
+    {
+      "feature": "sensor_14_mean_15",
+      "importance": 0.0029174736700952053
+    }
+  ],
+  "importance_kind": "tree impurity / gain importance",
+  "dataset": {
+    "subset": "FD001",
+    "train_rows": 20631,
+    "test_rows": 13096,
+    "train_engines": 100,
+    "test_engines": 100,
+    "official_labels": 100,
+    "columns": 26,
+    "missing_values": 0,
+    "constant_columns": [
+      "setting_3",
+      "sensor_1",
+      "sensor_5",
+      "sensor_10",
+      "sensor_16",
+      "sensor_18",
+      "sensor_19"
+    ],
+    "sensor_statistics": {
+      "sensor_1": {
+        "min": 518.67,
+        "max": 518.67,
+        "std": 0.0
+      },
+      "sensor_2": {
+        "min": 641.21,
+        "max": 644.53,
+        "std": 0.5000532700606232
+      },
+      "sensor_3": {
+        "min": 1571.04,
+        "max": 1616.91,
+        "std": 6.131149519690819
+      },
+      "sensor_4": {
+        "min": 1382.25,
+        "max": 1441.49,
+        "std": 9.000604780543714
+      },
+      "sensor_5": {
+        "min": 14.62,
+        "max": 14.62,
+        "std": 1.776399891637612e-15
+      },
+      "sensor_6": {
+        "min": 21.6,
+        "max": 21.61,
+        "std": 0.0013889849127073112
+      },
+      "sensor_7": {
+        "min": 549.85,
+        "max": 556.06,
+        "std": 0.8850922576634073
+      },
+      "sensor_8": {
+        "min": 2387.9,
+        "max": 2388.56,
+        "std": 0.07098547889092417
+      },
+      "sensor_9": {
+        "min": 9021.73,
+        "max": 9244.59,
+        "std": 22.082879525066232
+      },
+      "sensor_10": {
+        "min": 1.3,
+        "max": 1.3,
+        "std": 0.0
+      },
+      "sensor_11": {
+        "min": 46.85,
+        "max": 48.53,
+        "std": 0.2670873986396848
+      },
+      "sensor_12": {
+        "min": 518.69,
+        "max": 523.38,
+        "std": 0.7375533922097114
+      },
+      "sensor_13": {
+        "min": 2387.88,
+        "max": 2388.56,
+        "std": 0.07191891569857813
+      },
+      "sensor_14": {
+        "min": 8099.94,
+        "max": 8293.72,
+        "std": 19.07617597595311
+      },
+      "sensor_15": {
+        "min": 8.3249,
+        "max": 8.5848,
+        "std": 0.03750503795196652
+      },
+      "sensor_16": {
+        "min": 0.03,
+        "max": 0.03,
+        "std": 1.3878124153418844e-17
+      },
+      "sensor_17": {
+        "min": 388.0,
+        "max": 400.0,
+        "std": 1.5487630246142987
+      },
+      "sensor_18": {
+        "min": 2388.0,
+        "max": 2388.0,
+        "std": 0.0
+      },
+      "sensor_19": {
+        "min": 100.0,
+        "max": 100.0,
+        "std": 0.0
+      },
+      "sensor_20": {
+        "min": 38.14,
+        "max": 39.43,
+        "std": 0.18074642787366085
+      },
+      "sensor_21": {
+        "min": 22.8942,
+        "max": 23.6184,
+        "std": 0.10825087474491234
+      }
+    },
+    "source": "NASA C-MAPSS supplied files; simulated turbofan degradation trajectories"
+  },
+  "mae": 12.497220568656921,
+  "rmse": 17.071235029202324,
+  "evaluation_status": "complete",
+  "evaluation_engines": 100,
+  "evaluation_protocol": "Official uncapped RUL labels at the last observed cycle of each FD001 test engine. Test data unused for model selection.",
+  "predictions": [
+    {
+      "engine_id": 1,
+      "cycle": 31,
+      "actual_rul": 112.0,
+      "predicted_rul": 125.66914367675781,
+      "error": 13.669143676757812
+    },
+    {
+      "engine_id": 2,
+      "cycle": 49,
+      "actual_rul": 98.0,
+      "predicted_rul": 126.58350372314453,
+      "error": 28.58350372314453
+    },
+    {
+      "engine_id": 3,
+      "cycle": 126,
+      "actual_rul": 69.0,
+      "predicted_rul": 49.48056411743164,
+      "error": -19.51943588256836
+    },
+    {
+      "engine_id": 4,
+      "cycle": 106,
+      "actual_rul": 82.0,
+      "predicted_rul": 79.81709289550781,
+      "error": -2.1829071044921875
+    },
+    {
+      "engine_id": 5,
+      "cycle": 98,
+      "actual_rul": 91.0,
+      "predicted_rul": 93.8369140625,
+      "error": 2.8369140625
+    },
+    {
+      "engine_id": 6,
+      "cycle": 105,
+      "actual_rul": 93.0,
+      "predicted_rul": 92.7503662109375,
+      "error": -0.2496337890625
+    },
+    {
+      "engine_id": 7,
+      "cycle": 160,
+      "actual_rul": 91.0,
+      "predicted_rul": 103.1720962524414,
+      "error": 12.172096252441406
+    },
+    {
+      "engine_id": 8,
+      "cycle": 166,
+      "actual_rul": 95.0,
+      "predicted_rul": 80.37800598144531,
+      "error": -14.621994018554688
+    },
+    {
+      "engine_id": 9,
+      "cycle": 55,
+      "actual_rul": 111.0,
+      "predicted_rul": 117.06991577148438,
+      "error": 6.069915771484375
+    },
+    {
+      "engine_id": 10,
+      "cycle": 192,
+      "actual_rul": 96.0,
+      "predicted_rul": 86.28202819824219,
+      "error": -9.717971801757812
+    },
+    {
+      "engine_id": 11,
+      "cycle": 83,
+      "actual_rul": 97.0,
+      "predicted_rul": 93.18170166015625,
+      "error": -3.81829833984375
+    },
+    {
+      "engine_id": 12,
+      "cycle": 217,
+      "actual_rul": 124.0,
+      "predicted_rul": 107.77696228027344,
+      "error": -16.223037719726562
+    },
+    {
+      "engine_id": 13,
+      "cycle": 195,
+      "actual_rul": 95.0,
+      "predicted_rul": 96.1999740600586,
+      "error": 1.1999740600585938
+    },
+    {
+      "engine_id": 14,
+      "cycle": 46,
+      "actual_rul": 107.0,
+      "predicted_rul": 120.24808502197266,
+      "error": 13.248085021972656
+    },
+    {
+      "engine_id": 15,
+      "cycle": 76,
+      "actual_rul": 83.0,
+      "predicted_rul": 114.31909942626953,
+      "error": 31.31909942626953
+    },
+    {
+      "engine_id": 16,
+      "cycle": 113,
+      "actual_rul": 84.0,
+      "predicted_rul": 92.28023529052734,
+      "error": 8.280235290527344
+    },
+    {
+      "engine_id": 17,
+      "cycle": 165,
+      "actual_rul": 50.0,
+      "predicted_rul": 51.95632553100586,
+      "error": 1.9563255310058594
+    },
+    {
+      "engine_id": 18,
+      "cycle": 133,
+      "actual_rul": 28.0,
+      "predicted_rul": 62.68272399902344,
+      "error": 34.68272399902344
+    },
+    {
+      "engine_id": 19,
+      "cycle": 135,
+      "actual_rul": 87.0,
+      "predicted_rul": 88.05494689941406,
+      "error": 1.0549468994140625
+    },
+    {
+      "engine_id": 20,
+      "cycle": 184,
+      "actual_rul": 16.0,
+      "predicted_rul": 8.419342041015625,
+      "error": -7.580657958984375
+    },
+    {
+      "engine_id": 21,
+      "cycle": 148,
+      "actual_rul": 57.0,
+      "predicted_rul": 71.0157699584961,
+      "error": 14.015769958496094
+    },
+    {
+      "engine_id": 22,
+      "cycle": 39,
+      "actual_rul": 111.0,
+      "predicted_rul": 122.08309936523438,
+      "error": 11.083099365234375
+    },
+    {
+      "engine_id": 23,
+      "cycle": 130,
+      "actual_rul": 113.0,
+      "predicted_rul": 110.15557098388672,
+      "error": -2.8444290161132812
+    },
+    {
+      "engine_id": 24,
+      "cycle": 186,
+      "actual_rul": 20.0,
+      "predicted_rul": 21.074840545654297,
+      "error": 1.0748405456542969
+    },
+    {
+      "engine_id": 25,
+      "cycle": 48,
+      "actual_rul": 145.0,
+      "predicted_rul": 120.26072692871094,
+      "error": -24.739273071289062
+    },
+    {
+      "engine_id": 26,
+      "cycle": 76,
+      "actual_rul": 119.0,
+      "predicted_rul": 109.31851196289062,
+      "error": -9.681488037109375
+    },
+    {
+      "engine_id": 27,
+      "cycle": 140,
+      "actual_rul": 66.0,
+      "predicted_rul": 86.74267578125,
+      "error": 20.74267578125
+    },
+    {
+      "engine_id": 28,
+      "cycle": 158,
+      "actual_rul": 97.0,
+      "predicted_rul": 92.10838317871094,
+      "error": -4.8916168212890625
+    },
+    {
+      "engine_id": 29,
+      "cycle": 171,
+      "actual_rul": 90.0,
+      "predicted_rul": 95.42224884033203,
+      "error": 5.422248840332031
+    },
+    {
+      "engine_id": 30,
+      "cycle": 143,
+      "actual_rul": 115.0,
+      "predicted_rul": 84.8275375366211,
+      "error": -30.172462463378906
+    },
+    {
+      "engine_id": 31,
+      "cycle": 196,
+      "actual_rul": 8.0,
+      "predicted_rul": 13.964932441711426,
+      "error": 5.964932441711426
+    },
+    {
+      "engine_id": 32,
+      "cycle": 145,
+      "actual_rul": 48.0,
+      "predicted_rul": 48.66389846801758,
+      "error": 0.6638984680175781
+    },
+    {
+      "engine_id": 33,
+      "cycle": 50,
+      "actual_rul": 106.0,
+      "predicted_rul": 120.97270965576172,
+      "error": 14.972709655761719
+    },
+    {
+      "engine_id": 34,
+      "cycle": 203,
+      "actual_rul": 7.0,
+      "predicted_rul": 0.0,
+      "error": -7.0
+    },
+    {
+      "engine_id": 35,
+      "cycle": 198,
+      "actual_rul": 11.0,
+      "predicted_rul": 7.950591564178467,
+      "error": -3.049408435821533
+    },
+    {
+      "engine_id": 36,
+      "cycle": 126,
+      "actual_rul": 19.0,
+      "predicted_rul": 14.270776748657227,
+      "error": -4.729223251342773
+    },
+    {
+      "engine_id": 37,
+      "cycle": 121,
+      "actual_rul": 21.0,
+      "predicted_rul": 47.09547424316406,
+      "error": 26.095474243164062
+    },
+    {
+      "engine_id": 38,
+      "cycle": 125,
+      "actual_rul": 50.0,
+      "predicted_rul": 43.283870697021484,
+      "error": -6.716129302978516
+    },
+    {
+      "engine_id": 39,
+      "cycle": 37,
+      "actual_rul": 142.0,
+      "predicted_rul": 121.46697998046875,
+      "error": -20.53302001953125
+    },
+    {
+      "engine_id": 40,
+      "cycle": 133,
+      "actual_rul": 28.0,
+      "predicted_rul": 28.293392181396484,
+      "error": 0.2933921813964844
+    },
+    {
+      "engine_id": 41,
+      "cycle": 123,
+      "actual_rul": 18.0,
+      "predicted_rul": 46.64394760131836,
+      "error": 28.64394760131836
+    },
+    {
+      "engine_id": 42,
+      "cycle": 156,
+      "actual_rul": 10.0,
+      "predicted_rul": 17.51498794555664,
+      "error": 7.514987945556641
+    },
+    {
+      "engine_id": 43,
+      "cycle": 172,
+      "actual_rul": 59.0,
+      "predicted_rul": 74.67475891113281,
+      "error": 15.674758911132812
+    },
+    {
+      "engine_id": 44,
+      "cycle": 54,
+      "actual_rul": 109.0,
+      "predicted_rul": 118.01163482666016,
+      "error": 9.011634826660156
+    },
+    {
+      "engine_id": 45,
+      "cycle": 152,
+      "actual_rul": 114.0,
+      "predicted_rul": 65.17167663574219,
+      "error": -48.82832336425781
+    },
+    {
+      "engine_id": 46,
+      "cycle": 146,
+      "actual_rul": 47.0,
+      "predicted_rul": 47.88996887207031,
+      "error": 0.8899688720703125
+    },
+    {
+      "engine_id": 47,
+      "cycle": 73,
+      "actual_rul": 135.0,
+      "predicted_rul": 116.2590103149414,
+      "error": -18.740989685058594
+    },
+    {
+      "engine_id": 48,
+      "cycle": 78,
+      "actual_rul": 92.0,
+      "predicted_rul": 110.49122619628906,
+      "error": 18.491226196289062
+    },
+    {
+      "engine_id": 49,
+      "cycle": 303,
+      "actual_rul": 21.0,
+      "predicted_rul": 24.156435012817383,
+      "error": 3.156435012817383
+    },
+    {
+      "engine_id": 50,
+      "cycle": 74,
+      "actual_rul": 79.0,
+      "predicted_rul": 103.50679016113281,
+      "error": 24.506790161132812
+    },
+    {
+      "engine_id": 51,
+      "cycle": 144,
+      "actual_rul": 114.0,
+      "predicted_rul": 84.20018768310547,
+      "error": -29.79981231689453
+    },
+    {
+      "engine_id": 52,
+      "cycle": 189,
+      "actual_rul": 29.0,
+      "predicted_rul": 28.34950065612793,
+      "error": -0.6504993438720703
+    },
+    {
+      "engine_id": 53,
+      "cycle": 164,
+      "actual_rul": 26.0,
+      "predicted_rul": 29.150989532470703,
+      "error": 3.150989532470703
+    },
+    {
+      "engine_id": 54,
+      "cycle": 121,
+      "actual_rul": 97.0,
+      "predicted_rul": 114.42597198486328,
+      "error": 17.42597198486328
+    },
+    {
+      "engine_id": 55,
+      "cycle": 113,
+      "actual_rul": 137.0,
+      "predicted_rul": 97.29754638671875,
+      "error": -39.70245361328125
+    },
+    {
+      "engine_id": 56,
+      "cycle": 136,
+      "actual_rul": 15.0,
+      "predicted_rul": 13.309205055236816,
+      "error": -1.6907949447631836
+    },
+    {
+      "engine_id": 57,
+      "cycle": 160,
+      "actual_rul": 103.0,
+      "predicted_rul": 78.60232543945312,
+      "error": -24.397674560546875
+    },
+    {
+      "engine_id": 58,
+      "cycle": 176,
+      "actual_rul": 37.0,
+      "predicted_rul": 38.59553146362305,
+      "error": 1.5955314636230469
+    },
+    {
+      "engine_id": 59,
+      "cycle": 94,
+      "actual_rul": 114.0,
+      "predicted_rul": 116.58448791503906,
+      "error": 2.5844879150390625
+    },
+    {
+      "engine_id": 60,
+      "cycle": 147,
+      "actual_rul": 100.0,
+      "predicted_rul": 89.1092529296875,
+      "error": -10.8907470703125
+    },
+    {
+      "engine_id": 61,
+      "cycle": 159,
+      "actual_rul": 21.0,
+      "predicted_rul": 46.76443099975586,
+      "error": 25.76443099975586
+    },
+    {
+      "engine_id": 62,
+      "cycle": 232,
+      "actual_rul": 54.0,
+      "predicted_rul": 50.68663024902344,
+      "error": -3.3133697509765625
+    },
+    {
+      "engine_id": 63,
+      "cycle": 155,
+      "actual_rul": 72.0,
+      "predicted_rul": 66.58317565917969,
+      "error": -5.4168243408203125
+    },
+    {
+      "engine_id": 64,
+      "cycle": 168,
+      "actual_rul": 28.0,
+      "predicted_rul": 40.29121780395508,
+      "error": 12.291217803955078
+    },
+    {
+      "engine_id": 65,
+      "cycle": 71,
+      "actual_rul": 128.0,
+      "predicted_rul": 124.3580322265625,
+      "error": -3.6419677734375
+    },
+    {
+      "engine_id": 66,
+      "cycle": 147,
+      "actual_rul": 14.0,
+      "predicted_rul": 13.021758079528809,
+      "error": -0.9782419204711914
+    },
+    {
+      "engine_id": 67,
+      "cycle": 71,
+      "actual_rul": 77.0,
+      "predicted_rul": 107.71849060058594,
+      "error": 30.718490600585938
+    },
+    {
+      "engine_id": 68,
+      "cycle": 187,
+      "actual_rul": 8.0,
+      "predicted_rul": 14.032114028930664,
+      "error": 6.032114028930664
+    },
+    {
+      "engine_id": 69,
+      "cycle": 54,
+      "actual_rul": 121.0,
+      "predicted_rul": 119.88796997070312,
+      "error": -1.112030029296875
+    },
+    {
+      "engine_id": 70,
+      "cycle": 152,
+      "actual_rul": 94.0,
+      "predicted_rul": 80.43701934814453,
+      "error": -13.562980651855469
+    },
+    {
+      "engine_id": 71,
+      "cycle": 68,
+      "actual_rul": 118.0,
+      "predicted_rul": 108.46602630615234,
+      "error": -9.533973693847656
+    },
+    {
+      "engine_id": 72,
+      "cycle": 131,
+      "actual_rul": 50.0,
+      "predicted_rul": 79.46541595458984,
+      "error": 29.465415954589844
+    },
+    {
+      "engine_id": 73,
+      "cycle": 112,
+      "actual_rul": 131.0,
+      "predicted_rul": 108.15420532226562,
+      "error": -22.845794677734375
+    },
+    {
+      "engine_id": 74,
+      "cycle": 137,
+      "actual_rul": 126.0,
+      "predicted_rul": 78.75732421875,
+      "error": -47.24267578125
+    },
+    {
+      "engine_id": 75,
+      "cycle": 88,
+      "actual_rul": 113.0,
+      "predicted_rul": 100.99198150634766,
+      "error": -12.008018493652344
+    },
+    {
+      "engine_id": 76,
+      "cycle": 205,
+      "actual_rul": 10.0,
+      "predicted_rul": 8.869534492492676,
+      "error": -1.1304655075073242
+    },
+    {
+      "engine_id": 77,
+      "cycle": 162,
+      "actual_rul": 34.0,
+      "predicted_rul": 48.322021484375,
+      "error": 14.322021484375
+    },
+    {
+      "engine_id": 78,
+      "cycle": 72,
+      "actual_rul": 107.0,
+      "predicted_rul": 122.37923431396484,
+      "error": 15.379234313964844
+    },
+    {
+      "engine_id": 79,
+      "cycle": 101,
+      "actual_rul": 63.0,
+      "predicted_rul": 90.37529754638672,
+      "error": 27.37529754638672
+    },
+    {
+      "engine_id": 80,
+      "cycle": 133,
+      "actual_rul": 90.0,
+      "predicted_rul": 82.07243347167969,
+      "error": -7.9275665283203125
+    },
+    {
+      "engine_id": 81,
+      "cycle": 213,
+      "actual_rul": 8.0,
+      "predicted_rul": 4.489920616149902,
+      "error": -3.5100793838500977
+    },
+    {
+      "engine_id": 82,
+      "cycle": 162,
+      "actual_rul": 9.0,
+      "predicted_rul": 5.019826889038086,
+      "error": -3.980173110961914
+    },
+    {
+      "engine_id": 83,
+      "cycle": 73,
+      "actual_rul": 137.0,
+      "predicted_rul": 116.2913818359375,
+      "error": -20.7086181640625
+    },
+    {
+      "engine_id": 84,
+      "cycle": 172,
+      "actual_rul": 58.0,
+      "predicted_rul": 61.75843811035156,
+      "error": 3.7584381103515625
+    },
+    {
+      "engine_id": 85,
+      "cycle": 34,
+      "actual_rul": 118.0,
+      "predicted_rul": 122.0555419921875,
+      "error": 4.0555419921875
+    },
+    {
+      "engine_id": 86,
+      "cycle": 110,
+      "actual_rul": 89.0,
+      "predicted_rul": 91.94343566894531,
+      "error": 2.9434356689453125
+    },
+    {
+      "engine_id": 87,
+      "cycle": 56,
+      "actual_rul": 116.0,
+      "predicted_rul": 116.11669921875,
+      "error": 0.11669921875
+    },
+    {
+      "engine_id": 88,
+      "cycle": 68,
+      "actual_rul": 115.0,
+      "predicted_rul": 123.54991912841797,
+      "error": 8.549919128417969
+    },
+    {
+      "engine_id": 89,
+      "cycle": 177,
+      "actual_rul": 136.0,
+      "predicted_rul": 94.20826721191406,
+      "error": -41.79173278808594
+    },
+    {
+      "engine_id": 90,
+      "cycle": 146,
+      "actual_rul": 28.0,
+      "predicted_rul": 22.153776168823242,
+      "error": -5.846223831176758
+    },
+    {
+      "engine_id": 91,
+      "cycle": 234,
+      "actual_rul": 38.0,
+      "predicted_rul": 31.26192855834961,
+      "error": -6.738071441650391
+    },
+    {
+      "engine_id": 92,
+      "cycle": 150,
+      "actual_rul": 20.0,
+      "predicted_rul": 21.643461227416992,
+      "error": 1.6434612274169922
+    },
+    {
+      "engine_id": 93,
+      "cycle": 244,
+      "actual_rul": 85.0,
+      "predicted_rul": 48.402503967285156,
+      "error": -36.597496032714844
+    },
+    {
+      "engine_id": 94,
+      "cycle": 133,
+      "actual_rul": 55.0,
+      "predicted_rul": 54.63854217529297,
+      "error": -0.36145782470703125
+    },
+    {
+      "engine_id": 95,
+      "cycle": 89,
+      "actual_rul": 128.0,
+      "predicted_rul": 108.98271179199219,
+      "error": -19.017288208007812
+    },
+    {
+      "engine_id": 96,
+      "cycle": 97,
+      "actual_rul": 137.0,
+      "predicted_rul": 110.79991149902344,
+      "error": -26.200088500976562
+    },
+    {
+      "engine_id": 97,
+      "cycle": 134,
+      "actual_rul": 82.0,
+      "predicted_rul": 86.38363647460938,
+      "error": 4.383636474609375
+    },
+    {
+      "engine_id": 98,
+      "cycle": 121,
+      "actual_rul": 59.0,
+      "predicted_rul": 73.17472839355469,
+      "error": 14.174728393554688
+    },
+    {
+      "engine_id": 99,
+      "cycle": 97,
+      "actual_rul": 117.0,
+      "predicted_rul": 117.31121826171875,
+      "error": 0.31121826171875
+    },
+    {
+      "engine_id": 100,
+      "cycle": 198,
+      "actual_rul": 20.0,
+      "predicted_rul": 16.049400329589844,
+      "error": -3.9505996704101562
+    }
+  ],
+  "error_by_rul": [
+    {
+      "range": "0\u201330",
+      "count": 25,
+      "mae": 8.016212596893311,
+      "rmse": 12.478930197016604
+    },
+    {
+      "range": "30\u201360",
+      "count": 14,
+      "mae": 8.117563247680664,
+      "rmse": 11.463427870918487
+    },
+    {
+      "range": "60\u2013100",
+      "count": 27,
+      "mae": 13.183824751112196,
+      "rmse": 16.996813231210602
+    },
+    {
+      "range": "100\u2013\u221e",
+      "count": 34,
+      "mae": 17.050223182229434,
+      "rmse": 21.426891261506157
+    }
+  ],
+  "error_distribution": [
+    {
+      "lower": -48.82832336425781,
+      "upper": -41.86906941731771,
+      "count": 2
+    },
+    {
+      "lower": -41.86906941731771,
+      "upper": -34.9098154703776,
+      "count": 3
+    },
+    {
+      "lower": -34.9098154703776,
+      "upper": -27.9505615234375,
+      "count": 2
+    },
+    {
+      "lower": -27.9505615234375,
+      "upper": -20.991307576497395,
+      "count": 4
+    },
+    {
+      "lower": -20.991307576497395,
+      "upper": -14.03205362955729,
+      "count": 7
+    },
+    {
+      "lower": -14.03205362955729,
+      "upper": -7.0727996826171875,
+      "count": 8
+    },
+    {
+      "lower": -7.0727996826171875,
+      "upper": -0.1135457356770786,
+      "count": 23
+    },
+    {
+      "lower": -0.1135457356770786,
+      "upper": 6.845708211263023,
+      "count": 23
+    },
+    {
+      "lower": 6.845708211263023,
+      "upper": 13.804962158203125,
+      "count": 9
+    },
+    {
+      "lower": 13.804962158203125,
+      "upper": 20.764216105143234,
+      "count": 9
+    },
+    {
+      "lower": 20.764216105143234,
+      "upper": 27.723470052083343,
+      "count": 4
+    },
+    {
+      "lower": 27.723470052083343,
+      "upper": 34.68272399902344,
+      "count": 6
+    }
+  ],
+  "inference_latency_ms": 10.83052100148052,
+  "batch_inference_ms": 1.1773750302381814
+}
