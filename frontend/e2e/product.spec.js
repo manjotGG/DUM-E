@@ -14,11 +14,11 @@ test('real dataset, prediction, engine changes, and session history', async ({ p
   await page.getByRole('button', { name: 'Open engine workspace' }).click();
   await expect(page.locator('#engine-select')).toHaveValue('1');
   await expect(page.locator('#cycle-number')).toHaveValue('31');
-  await expect(page.getByRole('img', { name: 'sensor_2 measurements through 31 observed cycles' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'LPC outlet temperature · T24 measurements through 31 observed cycles' })).toBeVisible();
   await page.locator('#sensor-select').selectOption('sensor_11');
-  await expect(page.getByRole('img', { name: 'sensor_11 measurements through 31 observed cycles' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'HPC outlet static pressure · Ps30 measurements through 31 observed cycles' })).toBeVisible();
   await page.locator('#cycle-number').fill('20');
-  await expect(page.getByRole('img', { name: 'sensor_11 measurements through 20 observed cycles' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'HPC outlet static pressure · Ps30 measurements through 20 observed cycles' })).toBeVisible();
   const pending = page.waitForResponse(response => response.url().endsWith('/api/engines/predict') && response.request().method() === 'POST');
   await page.getByRole('button', { name: 'Predict remaining useful life', exact: true }).click();
   const backendResult = await (await pending).json();

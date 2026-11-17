@@ -8,6 +8,7 @@ from fastapi import HTTPException
 
 from backend.predictor import artifact_directory, load_engine_artifact
 from ml.engines.preprocess import COLUMNS, SENSORS, data_directory, load_trajectories, make_features
+from ml.engines.metadata import SENSOR_METADATA
 
 logger = logging.getLogger(__name__)
 LIMITATION = "Estimate from NASA simulated degradation data. Priority thresholds are configurable demonstration rules, not validated aircraft maintenance limits."
@@ -46,7 +47,7 @@ class EngineService:
 
     def engines(self):
         self.require_data()
-        return {"dataset": "FD001", "split": "test", "sensors": SENSORS,
+        return {"dataset": "FD001", "split": "test", "sensors": SENSORS, "sensor_metadata": SENSOR_METADATA,
                 "engines": [{"engine_id": int(engine), "available_cycles": int(group.cycle.max()), "observations": len(group)}
                             for engine, group in self.frame.groupby("engine_id")]}
 
@@ -67,6 +68,9 @@ class EngineService:
 
     def predict(self, engine_id, cycle=None):
         prefix = self.prefix(engine_id, cycle)
+        return self.predict_prefix(prefix)
+
+    def predict_prefix(self, prefix, source="dataset"):
         if self.artifact is None:
             raise HTTPException(503, "Engine model unavailable. Run python -m ml.engines.train and restart the backend.")
         start = time.perf_counter()
@@ -76,7 +80,7 @@ class EngineService:
             raise HTTPException(503, "Model returned an invalid estimate. Retrain the engine model.")
         value = max(0, value)
         priority = "Critical" if value < self.critical else "Elevated" if value < self.elevated else "Normal"
-        return {"engine_id": engine_id, "current_cycle": int(prefix.cycle.max()), "predicted_rul": round(value, 2),
+        return {"engine_id": int(prefix.engine_id.iloc[0]), "current_cycle": int(prefix.cycle.max()), "predicted_rul": round(value, 2), "source": source,
                 "maintenance_priority": priority, "model_version": self.artifact["model_version"], "model_name": self.artifact["model_name"],
                 "rul_unit": "cycles", "inference_ms": round((time.perf_counter() - start) * 1000, 2),
                 "thresholds": {"critical_below": self.critical, "elevated_below": self.elevated}, "limitation": LIMITATION}

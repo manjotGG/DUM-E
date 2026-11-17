@@ -1,11 +1,13 @@
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ScatterChart, Scatter, ReferenceLine, BarChart, Bar, Cell } from 'recharts';
+import { sensorInfo, sensorLabel } from '../data/sensors.js';
 
 const grid = '#232c3a';
 const tick = { fill: '#8392a6', fontSize: 11 };
 const tooltip = { background: '#151e2c', border: '1px solid #344255', borderRadius: 8, color: '#e7edf6', fontSize: 12 };
 export function SensorChart({ rows, sensor }) {
-  return <div className="chart-container" role="img" aria-label={`${sensor} measurements through ${rows.at(-1)?.cycle || 0} observed cycles`}><ResponsiveContainer width="100%" height="100%"><LineChart data={rows} margin={{ top: 16, right: 20, bottom: 12, left: 0 }}>
-    <CartesianGrid stroke={grid} vertical={false}/><XAxis dataKey="cycle" tick={tick} axisLine={false} tickLine={false} minTickGap={30} label={{ value: 'Operational cycle', position: 'insideBottom', offset: -8, fill: '#8392a6', fontSize: 11 }}/><YAxis domain={['auto', 'auto']} tick={tick} axisLine={false} tickLine={false} width={65} tickFormatter={v => Number(v.toFixed(2))}/><Tooltip contentStyle={tooltip} labelFormatter={v => `Cycle ${v}`} formatter={v => [Number(v).toFixed(4), sensor.replace('_', ' ')]}/><Line type="linear" dataKey={sensor} stroke="#55e2c2" strokeWidth={1.8} dot={false} activeDot={{ r: 4 }} isAnimationActive={false}/>
+  const info = sensorInfo(sensor);
+  return <div className="chart-container" role="img" aria-label={`${sensorLabel(sensor)} measurements through ${rows.at(-1)?.cycle || 0} observed cycles`}><ResponsiveContainer width="100%" height="100%"><LineChart data={rows} margin={{ top: 16, right: 20, bottom: 12, left: 0 }}>
+    <CartesianGrid stroke={grid} vertical={false}/><XAxis dataKey="cycle" tick={tick} axisLine={false} tickLine={false} minTickGap={30} label={{ value: 'Operational cycle', position: 'insideBottom', offset: -8, fill: '#8392a6', fontSize: 11 }}/><YAxis domain={['auto', 'auto']} tick={tick} axisLine={false} tickLine={false} width={65} tickFormatter={v => Number(v.toFixed(2))}/><Tooltip contentStyle={tooltip} labelFormatter={v => `Cycle ${v}`} formatter={v => [`${Number(v).toFixed(4)} ${info.unit}`, info.name]}/><Line type="linear" dataKey={sensor} stroke="#55e2c2" strokeWidth={1.8} dot={false} activeDot={{ r: 4 }} isAnimationActive={false}/>
   </LineChart></ResponsiveContainer></div>;
 }
 

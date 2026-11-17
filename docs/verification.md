@@ -1,5 +1,14 @@
 # Verification record
 
+## Upload and usability update — 18 November 2026
+
+- Production frontend build passed, with the upload and performance workspaces loaded on demand.
+- **52 Python tests passed**, including 25 new upload tests. Coverage includes symbol/canonical CSV headers, raw NASA whitespace logs, TSV, multiple arbitrary engine IDs, later-starting cycle histories, exact agreement with existing model predictions, minimum history, malformed columns, missing/nonfinite/extreme values, cycle gaps, duplicates, byte limits, and unavailable-model behavior. Upload inference works independently of the built-in dataset cache.
+- **14 desktop/mobile browser tests passed** in 17.5 seconds. New checks cover choosing a real sample file, actual upload-to-model prediction, named sensor charts, prediction export, short-log error and correction, stale-result clearing, performance matrix calculations, artifact-location guidance, and mobile layout.
+- Visually inspected the desktop upload workspace and mobile performance report. A final mobile presentation adjustment presents the performance matrix as readable stacked rows rather than requiring a horizontal swipe.
+- The model was loaded and inspected: XGBRegressor, 74 ordered features, version 1.0.0, 227,031-byte Joblib artifact. No retraining or artificial predictions were introduced.
+- No new Python or JavaScript dependencies were required. The earlier dependency audit below has not been rerun during this update.
+
 Development verification on 17 November 2026 used the supplied FD001 files, Python 3.10.11, Node 24.7.0, the saved XGBoost artifact, and a local FastAPI server serving the production frontend.
 
 ## Completed checks

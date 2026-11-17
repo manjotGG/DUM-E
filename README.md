@@ -19,6 +19,29 @@ Open **http://127.0.0.1:8000** for the dashboard and **http://127.0.0.1:8000/doc
 
 For the environment already prepared in this workspace, only `bash scripts/start.sh` is needed.
 
+## Using the dashboard
+
+- **Jet engines:** follow the three steps to choose an engine, select an observed cycle, and predict its remaining life. Sensors show their C-MAPSS names, symbols, and units, such as **LPC outlet temperature · T24 (°R)**. A “Use latest cycle” shortcut returns to the newest reading.
+- **Upload engine log:** choose or drop a CSV/TXT/TSV/LOG file and click **Analyze log & predict**. Download the sample log on this page to try the format. Each engine needs at least **15 consecutive cycles** and all **26 numeric columns**. Multiple engines in one file are supported; each receives a prediction at its latest uploaded cycle. Results include a sensor chart and downloadable prediction CSV.
+- **Model performance:** view the performance matrix with MAE, RMSE, MSE, R², average signed error, and the share of test estimates within 10/20 cycles. Explanations accompany each metric, along with the saved model location.
+- **Model analytics:** inspect actual-versus-predicted plots, errors, candidate model comparisons, and named feature importances.
+
+After a code update, stop the existing backend with Ctrl+C and start it again. Reload the browser. For source changes to the frontend, rebuild with `npm --prefix frontend run build` before restarting.
+
+Upload logs must match FD001’s equipment, operating regime, and original units. Arbitrary equipment logs are outside this model’s validated scope. Uploads are parsed as numeric text and are not saved on the server. See [upload format and sensor dictionary](docs/upload-format.md).
+
+## Where is the trained model / .pkl file?
+
+The trained model already exists at **[ml/models/engines/model.joblib](ml/models/engines/model.joblib)**. This project uses Joblib serialization rather than a `.pkl` filename. The artifact contains the trained **XGBRegressor**, fitted variance filter and scaler, 74 ordered input features, model version, and training configuration.
+
+Training is implemented in **[ml/engines/train.py](ml/engines/train.py)**. Final evaluation results are in **[ml/models/engines/metrics.json](ml/models/engines/metrics.json)**. The FastAPI service loads this artifact at startup and uses it for both dataset and uploaded-log predictions. You do not need to retrain for every upload.
+
+To inspect the saved pipeline from the project root:
+
+```bash
+.venv/bin/python -c "import joblib; print(joblib.load('ml/models/engines/model.joblib')['pipeline'])"
+```
+
 ## Dataset
 
 The supplied `CMAPSSData/` contains all four C-MAPSS subsets. This release deliberately trains and serves **FD001 only**, as specified in [architecture.md](architecture.md).
@@ -62,6 +85,9 @@ Restart the backend after retraining so it loads the new artifact and report.
 | GET | `/api/engines/{id}/history?cycle=20` | Observations through the requested cycle only; optional cycle |
 | POST | `/api/engines/predict` | `{"engine_id":1,"cycle":31}`; cycle optional, defaults to latest |
 | GET | `/api/engines/metrics` | Saved training and evaluation results |
+| GET | `/api/engines/log-schema` | Required log columns, sensor descriptions, and upload limits |
+| GET | `/api/engines/sample-log` | CSV with named sensor headers from the supplied test engine 1 |
+| POST | `/api/engines/analyze-log` | Raw numeric file body; validate and predict each uploaded engine |
 | POST | `/api/milling/predict` | Explicit 501 until milling is implemented |
 
 ```bash
@@ -71,6 +97,14 @@ curl -X POST http://127.0.0.1:8000/api/engines/predict \
 ```
 
 Engine 1 at cycle 31 produces approximately **125.67 cycles** with this artifact. The response includes model version, inference time, demo maintenance priority, and the configured thresholds. IDs are scoped to the test split. Cycles beyond observed history are rejected, and early-cycle estimates use only the available prefix. The inference service never reads the RUL labels; they appear only in evaluation analytics.
+
+Upload via the API (send the file bytes directly, not multipart form data):
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/engines/analyze-log \
+  -H 'Content-Type: application/octet-stream' \
+  --data-binary @CMAPSSData/test_FD001.txt
+```
 
 ## Development and configuration
 

@@ -1,0 +1,23 @@
+[
+  {"key":"sensor_1","symbol":"T2","name":"Fan inlet temperature","unit":"°R"},
+  {"key":"sensor_2","symbol":"T24","name":"LPC outlet temperature","unit":"°R"},
+  {"key":"sensor_3","symbol":"T30","name":"HPC outlet temperature","unit":"°R"},
+  {"key":"sensor_4","symbol":"T50","name":"LPT outlet temperature","unit":"°R"},
+  {"key":"sensor_5","symbol":"P2","name":"Fan inlet pressure","unit":"psia"},
+  {"key":"sensor_6","symbol":"P15","name":"Bypass duct pressure","unit":"psia"},
+  {"key":"sensor_7","symbol":"P30","name":"HPC outlet total pressure","unit":"psia"},
+  {"key":"sensor_8","symbol":"Nf","name":"Physical fan speed","unit":"rpm"},
+  {"key":"sensor_9","symbol":"Nc","name":"Physical core speed","unit":"rpm"},
+  {"key":"sensor_10","symbol":"epr","name":"Engine pressure ratio","unit":"ratio"},
+  {"key":"sensor_11","symbol":"Ps30","name":"HPC outlet static pressure","unit":"psia"},
+  {"key":"sensor_12","symbol":"phi","name":"Fuel flow to Ps30 ratio","unit":"pps/psi"},
+  {"key":"sensor_13","symbol":"NRf","name":"Corrected fan speed","unit":"rpm"},
+  {"key":"sensor_14","symbol":"NRc","name":"Corrected core speed","unit":"rpm"},
+  {"key":"sensor_15","symbol":"BPR","name":"Bypass ratio","unit":"ratio"},
+  {"key":"sensor_16","symbol":"farB","name":"Burner fuel–air ratio","unit":"ratio"},
+  {"key":"sensor_17","symbol":"htBleed","name":"Bleed enthalpy","unit":"dataset units"},
+  {"key":"sensor_18","symbol":"Nf_dmd","name":"Demanded fan speed","unit":"rpm"},
+  {"key":"sensor_19","symbol":"PCNfR_dmd","name":"Demanded corrected fan speed","unit":"rpm"},
+  {"key":"sensor_20","symbol":"W31","name":"HPT coolant bleed flow","unit":"lbm/s"},
+  {"key":"sensor_21","symbol":"W32","name":"LPT coolant bleed flow","unit":"lbm/s"}
+]

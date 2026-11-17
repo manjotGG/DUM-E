@@ -1,0 +1,25 @@
+import { ArrowRight, Cpu, Gauge, Target, Layers } from 'lucide-react';
+import { Badge, Metric, number, PanelHeader } from '../components/Shared.jsx';
+
+export default function Performance({ metrics, navigate }) {
+  if (!metrics) return <div className="empty-state"><Cpu/><h1>Model performance unavailable</h1><p>Train and evaluate the model, then refresh system status.</p></div>;
+  const actual = metrics.predictions.map(p => p.actual_rul), errors = metrics.predictions.map(p => p.predicted_rul - p.actual_rul);
+  const mean = actual.reduce((a, b) => a + b, 0) / actual.length;
+  const sst = actual.reduce((sum, v) => sum + (v - mean) ** 2, 0), sse = errors.reduce((sum, v) => sum + v ** 2, 0);
+  const r2 = sst ? 1 - sse / sst : null, bias = errors.reduce((a, b) => a + b, 0) / errors.length;
+  const within = tolerance => errors.filter(e => Math.abs(e) <= tolerance).length / errors.length * 100;
+  const rows = [
+    ['Mean absolute error (MAE)', `${number(metrics.mae, 2)} cycles`, 'Average distance between the estimate and the official remaining life. Lower is better.'],
+    ['Root mean squared error (RMSE)', `${number(metrics.rmse, 2)} cycles`, 'Gives more weight to large prediction errors. Lower is better.'],
+    ['Mean squared error (MSE)', `${number(sse / errors.length, 2)} cycles²`, 'Average squared prediction error. Lower is better.'],
+    ['R² score', number(r2, 4), 'Variance explained on the official test endpoints. A value of 1 is perfect; it can be negative.'],
+    ['Average signed error', `${number(bias, 2)} cycles`, 'Positive values mean the model overestimates remaining life on average.'],
+    ['Within ±10 cycles', `${number(within(10), 1)}%`, 'Share of test-engine estimates with an absolute error of at most 10 cycles.'],
+    ['Within ±20 cycles', `${number(within(20), 1)}%`, 'Share of test-engine estimates with an absolute error of at most 20 cycles.'],
+  ];
+  return <><div className="page-intro"><div><p className="eyebrow">TRAINED MODEL REPORT</p><h1>Model performance<span>.</span></h1><p>Understand how well the saved model predicts remaining engine life.</p></div><button className="secondary-button" onClick={() => navigate('analytics')}>Explore evaluation charts<ArrowRight size={16}/></button></div>
+    <div className="metric-grid"><Metric label="Mean absolute error" value={number(metrics.mae, 2)} unit="cycles" detail="Average remaining-life error" icon={Target}/><Metric label="Root mean squared error" value={number(metrics.rmse, 2)} unit="cycles" detail="Includes the effect of larger errors" icon={Gauge}/><Metric label="R² score" value={number(r2, 3)} detail="1.0 is a perfect fit on these test endpoints" icon={Cpu}/><Metric label="Test engines" value={metrics.evaluation_engines} detail="Official final-cycle NASA labels" icon={Layers}/></div>
+    <section className="panel performance-matrix"><PanelHeader eyebrow="REGRESSION METRICS" title="Performance matrix"><Badge tone="normal">Measured on the saved model</Badge></PanelHeader><p className="section-description">This model estimates a number of cycles, so its performance is measured with regression metrics. The figures below use the {metrics.evaluation_engines} saved official test predictions.</p><div className="table-scroll"><table><thead><tr><th>Metric</th><th>Measured value</th><th>How to read it</th></tr></thead><tbody>{rows.map(([name, value, explanation]) => <tr key={name}><td>{name}</td><td className="bright mono">{value}</td><td>{explanation}</td></tr>)}</tbody></table></div></section>
+    <div className="two-column"><section className="panel model-location"><PanelHeader eyebrow="MODEL ARTIFACT" title="Where your trained model lives"/><div className="artifact-details"><h3>{metrics.model_name}</h3><p>Version {metrics.model_version} · trained {new Date(metrics.trained_at).toLocaleString()}</p><label>Saved estimator + preprocessing</label><code>ml/models/engines/model.joblib</code><p>A .joblib file stores the trained Python model and fitted preprocessing. This project uses that file instead of a .pkl file.</p><label>Training pipeline</label><code>ml/engines/train.py</code><label>Saved evaluation results</label><code>ml/models/engines/metrics.json</code></div></section><section className="panel"><PanelHeader eyebrow="HOW IT WAS TESTED" title="Separate engines. Honest evaluation."/><div className="artifact-details"><p>Candidate models were trained on {metrics.training_config.train_engines.length} engines and compared on {metrics.training_config.validation_engines.length} held-out engines. The winner was then refitted on all 100 training engines.</p><p>Final results use the last observed cycle of each official test engine. Test labels were reserved for final evaluation.</p><p>Training target cap: {metrics.training_config.rul_cap || 'none'} cycles. Evaluation labels remain uncapped. This model is validated on FD001 only.</p><button className="text-button" onClick={() => navigate('analytics')}>View model comparison & errors<ArrowRight size={15}/></button></div></section></div>
+  </>;
+}

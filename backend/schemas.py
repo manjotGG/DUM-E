@@ -19,3 +19,4 @@ class EnginePredictionResponse(BaseModel):
     dataset: str = "NASA C-MAPSS FD001 · test trajectories"
     thresholds: dict[str, float]
     limitation: str
+    source: str = "dataset"
