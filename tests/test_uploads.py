@@ -48,6 +48,7 @@ def test_upload_matches_model_prediction(client, engine, symbols, header, sep):
     assert data["rows"] == 31 and data["engines_analyzed"] == 1
     prediction = data["predictions"][0]
     assert prediction["predicted_rul"] == expected["predicted_rul"]
+    assert prediction["explanation"] == expected["explanation"]
     assert prediction["source"] == "upload" and prediction["observations"] == 31
     assert len(data["histories"][0]["history"]) == 31
 

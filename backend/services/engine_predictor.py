@@ -7,6 +7,7 @@ import numpy as np
 from fastapi import HTTPException
 
 from backend.predictor import artifact_directory, load_engine_artifact
+from backend.services.prediction_explanation import explain_prediction
 from ml.engines.preprocess import COLUMNS, SENSORS, data_directory, load_trajectories, make_features
 from ml.engines.metadata import SENSOR_METADATA
 
@@ -80,7 +81,13 @@ class EngineService:
             raise HTTPException(503, "Model returned an invalid estimate. Retrain the engine model.")
         value = max(0, value)
         priority = "Critical" if value < self.critical else "Elevated" if value < self.elevated else "Normal"
+        try:
+            explanation = explain_prediction(self.artifact, features, prefix)
+        except Exception:
+            logger.exception("Could not explain engine prediction")
+            explanation = {"available": False, "summary": "Sensor contributions are temporarily unavailable."}
         return {"engine_id": int(prefix.engine_id.iloc[0]), "current_cycle": int(prefix.cycle.max()), "predicted_rul": round(value, 2), "source": source,
                 "maintenance_priority": priority, "model_version": self.artifact["model_version"], "model_name": self.artifact["model_name"],
                 "rul_unit": "cycles", "inference_ms": round((time.perf_counter() - start) * 1000, 2),
-                "thresholds": {"critical_below": self.critical, "elevated_below": self.elevated}, "limitation": LIMITATION}
+                "thresholds": {"critical_below": self.critical, "elevated_below": self.elevated}, "limitation": LIMITATION,
+                "explanation": explanation}

@@ -8,7 +8,7 @@ async function navigate(page, label) {
 test('real dataset, prediction, engine changes, and session history', async ({ page, request }, testInfo) => {
   const errors = []; page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'See beyond the next cycle.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toBeVisible();
   await expect(page.getByText('System ready', { exact: true })).toBeVisible();
   await page.screenshot({ path: `test-results/overview-${testInfo.project.name}.png`, fullPage: true });
   await page.getByRole('button', { name: 'Open engine workspace' }).click();
@@ -50,7 +50,7 @@ test('analytics shows saved evaluation and milling stays inactive', async ({ pag
   expect((await download).suggestedFilename()).toBe('DUM-E-FD001-evaluation.json');
   await page.screenshot({ path: `test-results/analytics-${testInfo.project.name}.png`, fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
-  await navigate(page, 'Milling machines 02');
+  await navigate(page, 'Milling machines');
   await expect(page.getByRole('heading', { name: 'The next module is taking shape.' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Predict remaining useful life' })).toHaveCount(0);
 });
@@ -76,4 +76,27 @@ test('unavailable backend shows a recoverable error', async ({ page }) => {
   await expect(page.getByRole('alert').first()).toBeVisible();
   await expect(page.getByRole('button', { name: 'Retry', exact: true }).first()).toBeVisible();
   await expect(page.getByText('System degraded', { exact: true })).toBeVisible();
+});
+
+test('low-cycle prediction identifies contributing sensors and opens their readings', async ({ page }, testInfo) => {
+  await page.goto('/#engines');
+  await expect(page.locator('#engine-select')).toHaveValue('1');
+  await page.locator('#engine-select').selectOption('100');
+  await expect(page.locator('#cycle-number')).toHaveValue('198');
+  const pending = page.waitForResponse(response => response.url().endsWith('/api/engines/predict'));
+  await page.getByRole('button', { name: 'Predict remaining useful life', exact: true }).click();
+  const result = await (await pending).json();
+  const reason = page.getByRole('region', { name: 'Prediction explanation' });
+  await expect(reason.getByRole('heading', { name: 'Why is the remaining life low?' })).toBeVisible();
+  const sensor = result.explanation.sensor_contributions[0];
+  expect(sensor.contribution_cycles).toBeLessThan(0);
+  await expect(reason).toContainText(sensor.name);
+  await expect(reason).toContainText(Math.abs(sensor.contribution_cycles).toFixed(1));
+  await page.screenshot({ path: `test-results/low-cycle-${testInfo.project.name}.png`, fullPage: true });
+  await reason.getByRole('button', { name: `Show ${sensor.symbol} sensor readings`, exact: true }).click();
+  await expect(page.locator('#sensor-select')).toHaveValue(sensor.key);
+  await expect(page.locator('#sensor-select')).toBeFocused();
+  await page.locator('#cycle-number').fill('197');
+  await expect(reason).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
 });

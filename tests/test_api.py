@@ -92,3 +92,46 @@ def test_built_dashboard_served_by_backend(client):
     response = client.get("/")
     assert response.status_code == 200
     assert "DUM-E" in response.text and 'id="root"' in response.text
+
+
+@pytest.mark.parametrize("engine_id,cycle", [(1, 1), (1, 31), (100, 198)])
+def test_sensor_explanation_reconciles_with_prediction(client, engine_id, cycle):
+    data = client.post("/api/engines/predict", json={"engine_id": engine_id, "cycle": cycle}).json()
+    explanation = data["explanation"]
+    assert explanation["available"] and explanation["method"] == "TreeSHAP"
+    sensors = explanation["sensor_contributions"]
+    assert len(sensors) == 14
+    assert [s["contribution_cycles"] for s in sensors] == sorted(s["contribution_cycles"] for s in sensors)
+    total = explanation["baseline_cycles"] + sum(s["contribution_cycles"] for s in sensors) + sum(explanation["other_contributions"].values())
+    assert total == pytest.approx(explanation["raw_prediction_cycles"], abs=1e-5)
+    assert max(0, total) == pytest.approx(data["predicted_rul"], abs=.01)
+    history = client.get(f"/api/engines/{engine_id}/history?cycle={cycle}").json()["history"]
+    for sensor in sensors:
+        assert sensor["reading"] == history[-1][sensor["key"]]
+        assert sensor["observed_window"] == min(cycle, 15)
+        assert sensor["recent_change"] == pytest.approx(history[-1][sensor["key"]] - history[-min(cycle, 15)][sensor["key"]])
+    if engine_id == 100:
+        assert data["maintenance_priority"] == "Critical"
+        assert sensors[0]["contribution_cycles"] < 0
+
+
+def test_explanation_uses_no_future_observations(client, monkeypatch):
+    service = app.state.engines
+    before = service.predict(1, 10)
+    changed = service.frame.copy()
+    changed.loc[(changed.engine_id == 1) & (changed.cycle > 10), "sensor_11"] = 99999
+    with monkeypatch.context() as patch:
+        patch.setattr(service, "frame", changed)
+        after = service.predict(1, 10)
+    assert before["explanation"] == after["explanation"]
+    assert before["predicted_rul"] == after["predicted_rul"]
+
+
+def test_explanation_failure_preserves_prediction(client, monkeypatch):
+    def fail(*args):
+        raise ValueError("Explanation failed")
+    monkeypatch.setattr("backend.services.engine_predictor.explain_prediction", fail)
+    response = client.post("/api/engines/predict", json={"engine_id": 1})
+    assert response.status_code == 200
+    assert response.json()["predicted_rul"] > 0
+    assert response.json()["explanation"]["available"] is False

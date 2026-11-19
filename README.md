@@ -26,6 +26,8 @@ For the environment already prepared in this workspace, only `bash scripts/start
 - **Model performance:** view the performance matrix with MAE, RMSE, MSE, R², average signed error, and the share of test estimates within 10/20 cycles. Explanations accompany each metric, along with the saved model location.
 - **Model analytics:** inspect actual-versus-predicted plots, errors, candidate model comparisons, and named feature importances.
 
+After each prediction, the explanation names the sensors lowering the estimate most, shows their readings and recent changes, and reports their contribution in cycles. Click a sensor name to view its chart. The same explanation is available for each uploaded engine. Expand **All sensor contributions** to see positive and negative effects.
+
 After a code update, stop the existing backend with Ctrl+C and start it again. Reload the browser. For source changes to the frontend, rebuild with `npm --prefix frontend run build` before restarting.
 
 Upload logs must match FD001’s equipment, operating regime, and original units. Arbitrary equipment logs are outside this model’s validated scope. Uploads are parsed as numeric text and are not saved on the server. See [upload format and sensor dictionary](docs/upload-format.md).
@@ -96,7 +98,7 @@ curl -X POST http://127.0.0.1:8000/api/engines/predict \
   -d '{"engine_id":1,"cycle":31}'
 ```
 
-Engine 1 at cycle 31 produces approximately **125.67 cycles** with this artifact. The response includes model version, inference time, demo maintenance priority, and the configured thresholds. IDs are scoped to the test split. Cycles beyond observed history are rejected, and early-cycle estimates use only the available prefix. The inference service never reads the RUL labels; they appear only in evaluation analytics.
+Engine 1 at cycle 31 produces approximately **125.67 cycles** with this artifact. The response includes model version, inference time (including explanation), demo maintenance priority, configured thresholds, and an `explanation` object. Native XGBoost TreeSHAP contributions use the fitted variance filter and scaler, aggregate every sensor’s current and historical features, and report cycle/operating-setting contributions separately. The model baseline plus all contributions reconstructs the raw prediction, before clipping to zero, within floating-point tolerance. The baseline is the model’s training-data reference, not a healthy-engine limit. Contributions explain this model estimate; they do not diagnose physical faults. If the model does not support contributions or explanation fails, the prediction still returns with `explanation.available: false`. IDs are scoped to the test split. Cycles beyond observed history are rejected, and early-cycle estimates use only the available prefix. The inference service never reads the RUL labels; they appear only in evaluation analytics.
 
 Upload via the API (send the file bytes directly, not multipart form data):
 
