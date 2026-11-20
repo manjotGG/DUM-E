@@ -9,4 +9,5 @@ frontend/test-results/
 frontend/playwright-report/
 .DS_Store
 *.log
+learn.txt
 
